@@ -1,0 +1,306 @@
+﻿<Window x:Class="StockMarketSimulation.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StockMarketSimulation"
+        mc:Ignorable="d"
+        Title="" Height="720" Width="1280" Closed="Window_Closed">
+
+    <Grid x:Name="mainGrid" Initialized="Grid_Initialized" Margin="0,0,0,0">
+        <Menu x:Name="menu" HorizontalAlignment="Left" Height="679" Margin="1,1,0,0" VerticalAlignment="Top" Width="165" Background="#FFCBCBCB">
+            <Button x:Name="btnPortfolio" Content="Portfolio" Height="104" Width="150" Style="{DynamicResource MetroButton}" Click="btnPortfolio_Click"/>
+            <Button x:Name="btnStocks" Content="Stocks" Height="104" Width="150" Style="{DynamicResource MetroButton}" Click="btnStocks_Click"/>
+            <Button x:Name="btnNews" Content="News" Height="104" Width="150" Style="{DynamicResource MetroButton}" Click="btnNews_Click"/>
+            <Button x:Name="btnQuests" Content="Quests" Height="104" Width="150" Style="{DynamicResource MetroButton}" Click="btnQuests_Click"/>
+            <Button x:Name="btnRanking" Content="Ranking" Height="104" Width="150" Style="{DynamicResource MetroButton}" Click="btnRanking_Click"/>
+        </Menu>
+
+
+        <ListView x:Name="listViewRanking" HorizontalAlignment="Left" Height="620" Margin="169,5,0,0" Width="1091" IsSynchronizedWithCurrentItem="True" BorderThickness="0" VerticalContentAlignment="Center" VerticalAlignment="Top" Visibility="Hidden">
+            <ListView.View>
+                <GridView x:Name="gridViewRanking">
+                    <GridView.ColumnHeaderContextMenu>
+                        <ContextMenu />
+                    </GridView.ColumnHeaderContextMenu>
+                    <GridViewColumn HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" Header="Rank" Width="150" DisplayMemberBinding="{Binding Rank}" />
+                    <GridViewColumn Header="Player" Width="250" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" DisplayMemberBinding="{Binding Player}"/>
+                    <GridViewColumn Header="NetWorth" Width="200" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" DisplayMemberBinding="{Binding NetWorth}"/>
+                    <GridViewColumn Header="" Width="491" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" DisplayMemberBinding="{Binding hmm}"/>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding userColour}" Value="True">
+                            <Setter Property="Background"  Value="LightBlue" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding AILevel2}" Value="True">
+                            <Setter Property="Background"  Value="LightGreen" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <ListView x:Name="listViewStocks" HorizontalAlignment="Left" Height="620" Margin="169,5,0,0" Width="1091" IsSynchronizedWithCurrentItem="True" BorderThickness="0" VerticalContentAlignment="Center" VerticalAlignment="Top" MouseDoubleClick="listViewStocks_MouseDoubleClick" Visibility="Hidden">
+            <ListView.View>
+                <GridView x:Name="gridView">
+                    <GridView.ColumnHeaderContextMenu>
+                        <ContextMenu />
+                    </GridView.ColumnHeaderContextMenu>
+                    <GridViewColumn HeaderContainerStyle="{DynamicResource GridHeaderCenter}" Header="Name" Width="180" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Industry" Width="120" HeaderContainerStyle="{DynamicResource GridHeaderCenter}" DisplayMemberBinding="{Binding Industry}"/>
+                    <GridViewColumn Header="Country" Width="140" HeaderContainerStyle="{DynamicResource GridHeaderCenter}" DisplayMemberBinding="{Binding Country}"/>
+                    <GridViewColumn Header="Price" Width="110" HeaderContainerStyle="{DynamicResource GridHeaderCenter}" DisplayMemberBinding="{Binding Price,StringFormat=N2}"/>
+                    <GridViewColumn Header="Ownership (%)" Width="130" HeaderContainerStyle="{DynamicResource GridHeaderCenter}" DisplayMemberBinding="{Binding Holding}"/>
+                    <GridViewColumn Header="Value" Width="190" HeaderContainerStyle="{DynamicResource GridHeaderCenter}" DisplayMemberBinding="{Binding Value}"/>
+                    <GridViewColumn x:Name="Change" Header="Change {%}" Width="90" HeaderContainerStyle="{DynamicResource GridHeaderCenter}">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock x:Name="Txt" Text="{Binding Change}" />
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding ChangePositive}" Value="2">
+                                    <Setter TargetName="Txt" Property="Foreground" Value="Green" />
+                                        <Setter TargetName="Txt" Property="FontFamily" Value="Segoe UI Semibold" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ChangePositive}" Value="1">
+                                        <Setter TargetName="Txt" Property="Foreground" Value="Red" />
+                                        <Setter TargetName="Txt" Property="FontFamily" Value="Segoe UI Semibold" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Dividend Yield" Width="130" HeaderContainerStyle="{DynamicResource GridHeaderCenter}" DisplayMemberBinding="{Binding DividendYield}"/>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment"  Value="Center"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <ListView x:Name="listViewPortfolio" HorizontalAlignment="Left" Height="620" Margin="169,105,0,0" Width="1091" IsSynchronizedWithCurrentItem="True" BorderThickness="0" VerticalContentAlignment="Center" VerticalAlignment="Top" Visibility="Hidden">
+            <ListView.View>
+                <GridView x:Name="gridViewPortfolio">
+                    <GridView.ColumnHeaderContextMenu>
+                        <ContextMenu />
+                    </GridView.ColumnHeaderContextMenu>
+                    <GridViewColumn HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" Header="Name" Width="180" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Industry" Width="120" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" DisplayMemberBinding="{Binding Industry}"/>
+                    <GridViewColumn Header="Country" Width="140" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" DisplayMemberBinding="{Binding Country}"/>
+                    <GridViewColumn Header="Price" Width="110" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" DisplayMemberBinding="{Binding Price,StringFormat=N2}"/>
+                    <GridViewColumn Header="Ownership (%)" Width="130" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" DisplayMemberBinding="{Binding Holding}"/>
+                    <GridViewColumn Header="Value" Width="190" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" DisplayMemberBinding="{Binding Value}"/>
+                    <GridViewColumn Header="Change {%}" Width="90" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock x:Name="Txt" Text="{Binding Change}" />
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding ChangePositive}" Value="2">
+                                    <Setter TargetName="Txt" Property="Foreground" Value="Green" />
+                                    <Setter TargetName="Txt" Property="FontFamily" Value="Segoe UI Semibold" />
+                                    </DataTrigger>
+                                <DataTrigger Binding="{Binding ChangePositive}" Value="1">
+                                    <Setter TargetName="Txt" Property="Foreground" Value="Red" />
+                                    <Setter TargetName="Txt" Property="FontFamily" Value="Segoe UI Semibold" />
+                                    </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Dividend Yield" Width="130" HeaderContainerStyle="{DynamicResource GridHeaderCenterBlack}" DisplayMemberBinding="{Binding DividendYield}"/>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <Grid x:Name="gridPortfolio" HorizontalAlignment="Left" Height="90" Margin="171,10,0,0" VerticalAlignment="Top" Width="1091" Visibility="Hidden">
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Money: " VerticalAlignment="Top" RenderTransformOrigin="-0.68,0.844" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,50,0,0" TextWrapping="Wrap" Text="Stock worth:" VerticalAlignment="Top" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtMoney" HorizontalAlignment="Left" Margin="98,10,0,0" TextWrapping="Wrap" Text="50 000" VerticalAlignment="Top" FontSize="17.333" FontWeight="Bold" Width="140" TextAlignment="Right"/>
+            <TextBlock x:Name="txtStockWorth" HorizontalAlignment="Left" Margin="130,50,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" FontSize="17.333" FontWeight="Bold" Width="110" TextAlignment="Right"/>
+            <Image x:Name="image" HorizontalAlignment="Left" Height="24" Margin="247,9,0,0" VerticalAlignment="Top" Width="24" Source="/StockMarketSimulation;component/Images/dollar.png"/>
+            <Image x:Name="image1" HorizontalAlignment="Left" Height="24" Margin="247,49,0,0" VerticalAlignment="Top" Width="24" Source="/StockMarketSimulation;component/Images/dollar.png"/>
+            <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="390,50,0,0" TextWrapping="Wrap" Text="Quests completed:" VerticalAlignment="Top" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="390,10,0,0" TextWrapping="Wrap" Text="Money from dividends:" VerticalAlignment="Top" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtDividends" HorizontalAlignment="Left" Margin="585,10,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" FontSize="17.333" FontWeight="Bold" Width="110" TextAlignment="Right"/>
+            <TextBlock x:Name="txtQuests" HorizontalAlignment="Left" Margin="615,50,0,0" TextWrapping="Wrap" Text="0/x" VerticalAlignment="Top" FontSize="17.333" FontWeight="Bold" Width="109" TextAlignment="Right"/>
+            <Image x:Name="image2" HorizontalAlignment="Left" Height="24" Margin="704,9,0,0" VerticalAlignment="Top" Width="24" Source="/StockMarketSimulation;component/Images/dollar.png"/>
+            <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="850,10,0,0" TextWrapping="Wrap" Text="Net worth growth:" VerticalAlignment="Top" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtNetWorthGrowth" HorizontalAlignment="Left" Margin="1001,10,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" FontSize="17.333" FontWeight="Bold" Width="39" TextAlignment="Right"/>
+            <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" Margin="1045,10,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" FontSize="17.333" FontWeight="Bold"/>
+            <TextBlock x:Name="textBlock6" HorizontalAlignment="Left" Margin="850,50,0,0" TextWrapping="Wrap" Text="Current Quest:" VerticalAlignment="Top" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <Image x:Name="image19" HorizontalAlignment="Left" Height="36" Margin="1029,43,0,0" VerticalAlignment="Top" Width="36"/>
+        </Grid>
+        <Grid x:Name="gridNews" HorizontalAlignment="Left" Height="669" Margin="171,10,0,0" VerticalAlignment="Top" Width="1091" Visibility="Hidden">
+            <Canvas Name="canvasNews" Height="35" Canvas.Left="10" ClipToBounds="True"  HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Canvas.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFF1E992" Offset="1"/>
+                        <GradientStop Color="#FFF9E51B" Offset="0"/>
+                    </LinearGradientBrush>
+                </Canvas.Background>
+
+                <TextBlock x:Name="textBlockNews" Text="" Padding="5,0,5,5" TextAlignment="Center" Height="35" FontSize="24" VerticalAlignment="Center">                 
+
+                </TextBlock>
+
+                <TextBlock x:Name="textBlockNews2" Text="NEWS" Padding="5,0,5,5" TextAlignment="Center" Height="35" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="White">
+                    <TextBlock.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0.0" Color="#FF191918" />
+                            <GradientStop Offset="1.0" Color="#FF615B4E" />
+                        </LinearGradientBrush>
+                    </TextBlock.Background>
+                </TextBlock>
+
+
+            </Canvas>
+            <Image x:Name="newsImage" Canvas.Left="120" Canvas.Top="-49" Margin="0,40,10,169" />
+
+            <ListBox x:Name="listBox" Canvas.Left="860" Canvas.Top="324" Margin="10,505,10,10">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Description}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <!-- <MediaElement x:Name="mediaElement" HorizontalAlignment="Left" Height="326" Margin="280,50,0,0" VerticalAlignment="Top" Width="580" Stretch="None" LoadedBehavior="Play" UnloadedBehavior="Manual" MediaEnded="mediaElement_MediaEnded"/> -->
+        </Grid>
+        <Grid x:Name="gridQuests" HorizontalAlignment="Left" Height="669" Margin="171,5,0,0" VerticalAlignment="Top" Width="1091" Visibility="Hidden">
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272">
+                <Image x:Name="image3" Width="252" Height="85" Source="Images/4bronze.png" Margin="9"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="272,0,0,0">
+                <Image x:Name="image4" Width="252" Height="85" Source="Images/3bronze.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="544,0,0,0">
+                <Image x:Name="image5" Width="252" Height="85" Source="Images/2bronze.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="816,0,0,0">
+                <Image x:Name="image6" Width="252" Height="85" Source="Images/1bronze.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="0,167,0,0">
+                <Image x:Name="image7" Width="252" Height="100" Source="Images/4silver.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="272,167,0,0">
+                <Image x:Name="image8" Width="252" Height="100" Source="Images/3silver.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="544,167,0,0">
+                <Image x:Name="image9" Width="252" Height="100" Source="Images/2silver.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="816,167,0,0">
+                <Image x:Name="image10" Width="252" Height="100" Source="Images/1silver.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="0,334,0,0">
+                <Image x:Name="image11" Width="252" Height="115" Source="Images/4gold.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="272,334,0,0">
+                <Image x:Name="image12" Width="252" Height="115" Source="Images/3gold.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="544,334,0,0">
+                <Image x:Name="image13" Width="252" Height="115" Source="Images/2gold.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="816,334,0,0">
+                <Image x:Name="image14" Width="252" Height="115" Source="Images/1gold.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="0,501,0,0">
+                <Image x:Name="image15" Width="252" Height="147" Source="Images/4dia.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="272,501,0,0">
+                <Image x:Name="image16" Width="252" Height="147" Source="Images/3dia.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="544,501,0,0">
+                <Image x:Name="image17" Width="252" Height="147" Source="Images/2dia.png"/>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="272" Margin="816,502,0,0">
+                <Image x:Name="image18" Width="252" Height="147" Source="Images/1dia.png"/>
+            </Border>
+        </Grid>
+        <Grid x:Name="gridCurrentQuest" HorizontalAlignment="Left" Height="669" Margin="171,5,0,0" VerticalAlignment="Top" Width="1091" Visibility="Hidden">
+            <TextBlock x:Name="textBlock7" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="Task:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock8" HorizontalAlignment="Left" Margin="20,60,0,0" TextWrapping="Wrap" Text="Reward:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock9" HorizontalAlignment="Left" Margin="20,100,0,0" TextWrapping="Wrap" Text="Difficulty:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <ProgressBar x:Name="progressBarDifficulty" HorizontalAlignment="Left" Height="22" Margin="120,101,0,0" VerticalAlignment="Top" Width="188" SmallChange="1" Background="{x:Null}" BorderBrush="#FF6E6E6E" BorderThickness="1.5" Foreground="Red" Maximum="10"/>
+            <TextBlock x:Name="txtTask" HorizontalAlignment="Left" Margin="120,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtReward" HorizontalAlignment="Left" Margin="120,60,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtHelp" HorizontalAlignment="Left" Margin="20,150,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <Button x:Name="btnLanguage" Content="CZ" HorizontalAlignment="Center" Margin="1000,20,0,0" VerticalAlignment="Top" Width="48" Style="{DynamicResource MetroButton}" FontFamily="Segoe UI Semibold" BorderThickness="0.6" Click="btnLanguage_Click"/>
+            <TextBlock x:Name="txtQuestion" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold" HorizontalAlignment="Center" Margin="0,300,0,0"/>
+            <Menu x:Name="menuForButtons" HorizontalAlignment="Left" Height="201" Margin="228,340,0,0" VerticalAlignment="Top" Width="634" Background="#FFE4E4E4" Visibility="Hidden">
+
+                <Button x:Name="btn1" Content="" Height="60" Width="620" Style="{DynamicResource MetroButton}"  Margin="0,0,0,0" Click="btn1_Click"/>
+                <Button x:Name="btn2" Content="" Height="60" Width="620" Style="{DynamicResource MetroButton}"  Margin="0,0,0,0" Click="btn2_Click"/>
+                <Button x:Name="btn3" Content="" Height="60" Width="620" Style="{DynamicResource MetroButton}"  Margin="0,0,0,0" Click="btn3_Click"/>
+            </Menu>
+        </Grid>
+        <Grid x:Name="gridCurrentStock" HorizontalAlignment="Left" Height="669" Margin="171,5,0,0" VerticalAlignment="Top" Width="1091" Visibility="Hidden">
+            <TextBlock x:Name="textBlock10" HorizontalAlignment="Left" Margin="20,80,0,0" TextWrapping="Wrap" Text="Name:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock11" HorizontalAlignment="Left" Margin="20,120,0,0" TextWrapping="Wrap" Text="Industry:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock12" HorizontalAlignment="Left" Margin="20,160,0,0" TextWrapping="Wrap" Text="Country:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock13" HorizontalAlignment="Left" Margin="20,200,0,0" TextWrapping="Wrap" Text="Shares Outstanding:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock14" HorizontalAlignment="Left" Margin="20,240,0,0" TextWrapping="Wrap" Text="Price/Earnings:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock15" HorizontalAlignment="Left" Margin="20,280,0,0" TextWrapping="Wrap" Text="DividendYield:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="textBlock16" HorizontalAlignment="Left" Margin="20,320,0,0" TextWrapping="Wrap" Text="Volume:" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtName" HorizontalAlignment="Left" Margin="80,80,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtIndustry" HorizontalAlignment="Left" Margin="100,120,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtCountry" HorizontalAlignment="Left" Margin="90,160,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtSharesOustanding" HorizontalAlignment="Left" Margin="190,200,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtPriceEarnings" HorizontalAlignment="Left" Margin="150,240,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtDividendYield" HorizontalAlignment="Left" Margin="140,280,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="txtVolume" HorizontalAlignment="Left" Margin="90,320,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="17.333" FontFamily="Segoe UI Semibold"/>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="20" Margin="516,600,0,0" VerticalAlignment="Top" Width="550">
+            <TextBlock x:Name="txtPurchase" HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="13.333" FontFamily="Segoe UI Semibold"/>
+            </Border>
+            <Image x:Name="image20" HorizontalAlignment="Left" Height="30" Margin="92,22,0,0" VerticalAlignment="Top" Width="30" Source="/StockMarketSimulation;component/Images/dollar.png"/>
+            <TextBlock x:Name="txtPrice" HorizontalAlignment="Right" Margin="0,19,1000,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.02,-0.062" FontSize="24" FontWeight="Bold"/>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="400" Margin="290,10,0,0" VerticalAlignment="Top" Width="791">
+                <d3:ChartPlotter Name="plotter">
+                    <d3:ChartPlotter.HorizontalAxis>
+                        <d3:HorizontalDateTimeAxis x:Name="dateAxis"/>
+                    </d3:ChartPlotter.HorizontalAxis>
+                </d3:ChartPlotter>
+            </Border>
+
+            <TextBlock x:Name="StockCountBuyTextBlock" Margin="518,498,473,155" TextAlignment="Center"><Run Text="0"/></TextBlock>
+            <Slider x:Name="StockCountSliderBuy" Margin="518,514,473,127" Minimum="0" Maximum="100" RenderTransformOrigin="0.495,1.429" ValueChanged="StockCountSliderBuy_ValueChanged" SmallChange="1" ></Slider>
+            <Button x:Name="buttonBuy" Content="Buy" HorizontalAlignment="Left" Margin="518,429,0,0" VerticalAlignment="Top" Width="100" Height="64" Background="#FF149520" FontSize="29.333" FontWeight="Bold" Click="buttonBuy_Click"/>
+            <Button x:Name="buttonSell" Content="Sell" HorizontalAlignment="Left" Margin="767,429,0,0" VerticalAlignment="Top" Width="100" Height="64" Background="#FFB61A1A" FontWeight="Bold" FontSize="29.333" Click="buttonSell_Click"/>
+            <Slider x:Name="StockCountSliderSell" Margin="767,514,224,127" Minimum="0" Maximum="100" RenderTransformOrigin="0.495,1.429" ValueChanged="StockCountSliderSell_ValueChanged" SmallChange="1" />
+            <TextBlock x:Name="StockCountSellTextBlock" Text="0" Margin="767,498,224,155" TextAlignment="Center"/>
+            <Button x:Name="limitOrderbtn" Content="Limit Order" HorizontalAlignment="Left" Margin="170,534,0,0" VerticalAlignment="Top" Width="150" Height="44" Background="#FFBFBFBF" FontSize="18.667" FontWeight="Bold" Click="limitOrderbtn_Click"/>
+            <Button x:Name="MarketOrderbtn" Content="Market Order" HorizontalAlignment="Left" Margin="170,449,0,0" VerticalAlignment="Top" Width="150" Height="44" Background="#FF149520" FontSize="18.667" FontWeight="Bold" Click="MarketOrderbtn_Click"/>
+            <Slider x:Name="slider" HorizontalAlignment="Left" Margin="320,542,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.5,0.5" Visibility="Hidden" ValueChanged="slider_ValueChanged">
+                <Slider.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Slider.RenderTransform>
+            </Slider>
+            <TextBlock x:Name="txtLimitOrder" HorizontalAlignment="Left" Margin="370,545,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" RenderTransformOrigin="0.555,1.2" FontSize="17.333" FontFamily="Segoe UI Semibold" Visibility="Hidden"/>
+        </Grid>
+        <Grid x:Name="gridStartScreen" HorizontalAlignment="Left" Height="669" Margin="171,5,0,0" VerticalAlignment="Top" Width="1091">
+            <Image Source="Images/Title.jpg" Margin="0,-48,0,48" Opacity="0.75"/>
+            <Canvas Margin="360,25,360,48" Background="White" Opacity="0.75" />
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="32" Margin="381,25,381,0">
+                Stock Market Simulator
+            </TextBlock>
+            <TextBlock  x:Name="TitleText" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="23" Margin="370,73,371,0" Height="514" Width="350" TextWrapping="Wrap"></TextBlock>
+            <Button x:Name="btnTitleLanguage" Content="CZ" HorizontalAlignment="Center" Margin="1000,20,0,0" VerticalAlignment="Top" Width="48" Style="{DynamicResource MetroButton}" FontFamily="Segoe UI Semibold" BorderThickness="0.6" Click="btnTitleLanguage_Click"/>
+            <TextBlock Text="                       Pavel Jahoda                     " HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" Margin="370,592,371,0" Height="29" Width="350" TextWrapping="Wrap"></TextBlock>
+        </Grid>
+
+    </Grid>
+
+</Window>
