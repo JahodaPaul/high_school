@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C813A750-EEE7-4870-A1AE-27CD8E0006C8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StockMarketSimulation</RootNamespace>
+    <AssemblyName>StockMarketSimulation</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Dollar.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DynamicDataDisplay">
+      <HintPath>.\DynamicDataDisplay.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Events.cs" />
+    <Compile Include="listViewGridView.cs" />
+    <Compile Include="LoadingData.cs" />
+    <Compile Include="Order.cs" />
+    <Compile Include="Stocks.cs" />
+    <Compile Include="TraderLevel1.cs" />
+    <Compile Include="TraderLevel2.cs" />
+    <Compile Include="Users.cs" />
+    <Compile Include="Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <Page Include="button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GridHeaderCenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GridHeaderCenterBlack.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\worldBackground.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\buy-hold-sell-wheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pointer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\worldBackgroundNew.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\worldBackgroundMotionBlur.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\worldBackgroundBlur.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Dollar.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dollar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\cinemagraph_Whiskey.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\4bronze.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1bronze.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1dia.png" />
+    <Resource Include="Images\1gold.png" />
+    <Resource Include="Images\1silver.png" />
+    <Resource Include="Images\2bronze.png" />
+    <Resource Include="Images\2dia.png" />
+    <Resource Include="Images\2gold.png" />
+    <Resource Include="Images\2silver.png" />
+    <Resource Include="Images\3bronze.png" />
+    <Resource Include="Images\3dia.png" />
+    <Resource Include="Images\3gold.png" />
+    <Resource Include="Images\3silver.png" />
+    <Resource Include="Images\4dia.png" />
+    <Resource Include="Images\4gold.png" />
+    <Resource Include="Images\4silver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\3bronzeUncompleted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1bronzeUncompleted.png" />
+    <Resource Include="Images\1diaUncompleted.png" />
+    <Resource Include="Images\1goldUncompleted.png" />
+    <Resource Include="Images\1silverUncompleted.png" />
+    <Resource Include="Images\2bronzeUncompleted.png" />
+    <Resource Include="Images\2diaUncompleted.png" />
+    <Resource Include="Images\2goldUncompleted.png" />
+    <Resource Include="Images\2silverUncompleted.png" />
+    <Resource Include="Images\3diaUncompleted.png" />
+    <Resource Include="Images\3goldUncompleted.png" />
+    <Resource Include="Images\3silverUncompleted.png" />
+    <Resource Include="Images\4bronzeUncompleted.png" />
+    <Resource Include="Images\4diaUncompleted.png" />
+    <Resource Include="Images\4goldUncompleted.png" />
+    <Resource Include="Images\4silverUncompleted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Title.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\news\01.jpg" />
+    <Resource Include="Images\news\02.jpg" />
+    <Resource Include="Images\news\03.jpg" />
+    <Resource Include="Images\news\04.jpg" />
+    <Resource Include="Images\news\05.jpg" />
+    <Resource Include="Images\news\06.jpg" />
+    <Resource Include="Images\news\07.jpg" />
+    <Resource Include="Images\news\08.jpg" />
+    <Resource Include="Images\news\09.jpg" />
+    <Resource Include="Images\news\10.jpg" />
+    <Resource Include="Images\news\11.jpg" />
+    <Resource Include="Images\news\12.jpg" />
+    <Resource Include="Images\news\13.jpg" />
+    <Resource Include="Images\news\14.jpg" />
+    <Resource Include="Images\news\15.jpg" />
+    <Resource Include="Images\news\16.jpg" />
+    <Resource Include="Images\news\17.jpg" />
+    <Resource Include="Images\news\18.jpg" />
+    <Resource Include="Images\news\19.jpg" />
+    <Resource Include="Images\news\20.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

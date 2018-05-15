@@ -1,0 +1,13 @@
+﻿<Window x:Class="StockMarketSimulation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="" Height="400" Width="700">
+    <Grid x:Name="grid" Height="398" Width="680">
+        <Grid.Background>
+            <ImageBrush x:Name="backGroundImageBrush" ImageSource="/StockMarketSimulation;component/Images/worldBackgroundNew.jpg"/>
+        </Grid.Background>
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="280,165,0,0" Name="txtLogin" VerticalAlignment="Top" Width="140" Text="Nickname" MouseEnter="txtLogin_MouseEnter" MouseLeave="txtLogin_MouseLeave" PreviewMouseDown="txtLogin_PreviewMouseDown" KeyDown="txtLogin_KeyDown" />
+        <Image x:Name="loadingImage" HorizontalAlignment="Left" Height="150" Margin="275,100,0,0" VerticalAlignment="Top" Width="150" Source="Images/buy-hold-sell-wheel.png" Opacity="0" Visibility="Hidden"/>
+        <Image x:Name="pointerImage" HorizontalAlignment="Left" Height="150" Margin="275,100,0,0" VerticalAlignment="Top" Width="150" Source="Images/pointer.png" Opacity="0" Visibility="Hidden"/>
+    </Grid>
+</Window>
