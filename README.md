@@ -1,2 +1,1 @@
-# high_school
-Code written during high school years.
+## Code written during high school years.
